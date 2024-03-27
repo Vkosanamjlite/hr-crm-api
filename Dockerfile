@@ -25,6 +25,7 @@ RUN apk add --update --no-cache postgresql-client && \
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip setuptools && \
     /py/bin/pip install -r /tmp/requirements.txt && \
+    echo "DEV=$DEV" && \
     if [ "$DEV" = 'true' ]; then /py/bin/pip install -r /tmp/requirements.dev.txt; fi && \
     apk del .tmp-build-deps
 
@@ -45,3 +46,9 @@ USER django-user
 
 # Command to run the application
 CMD ["python", "app.py"]
+
+RUN echo "DEV=$DEV"
+RUN if [ "$DEV" = "true" ]; then echo "this is true"; fi
+RUN if [ "$DEV" = 'true' ]; then echo "this is not true"; fi
+RUN if [ $DEV = "true" ]; then echo "this is not 0true"; fi
+RUN if [ $DEV = 'true' ]; then echo "this is not 2true"; fi
