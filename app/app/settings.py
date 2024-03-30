@@ -37,7 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'drf_spectacular',
     'core',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -125,3 +129,28 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'core.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
+SPECTACULAR_SETTINGS = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'COMPONENTS': {
+        'securitySchemes': {
+            'TokenAuth': {
+                'type': 'http',
+                'scheme': 'bearer',
+                'bearerFormat': 'Token',  # Indicates the prefix expected before the token value
+                'description': 'Token-based authentication with required prefix "Token ". Example: "Authorization: Token {token}"',
+            },
+        }
+    },
+    'SECURITY': [
+        {'TokenAuth': []}
+    ]
+}
