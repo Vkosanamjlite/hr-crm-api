@@ -4,7 +4,7 @@ Django Admin
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from core import models
+from . import models
 
 
 class UserAdmin(BaseUserAdmin):
@@ -34,3 +34,4 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(models.User, UserAdmin)
+admin.site.register(models.Recipe)
