@@ -64,3 +64,34 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Contact(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE,
+        related_name='contacts')
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+
+
+class Email(models.Model):
+    contact = models.ForeignKey(
+        Contact, related_name='emails',
+        on_delete=models.CASCADE)
+    email = models.EmailField()
+
+
+class PhoneNumber(models.Model):
+    contact = models.ForeignKey(
+        Contact, related_name='phone_numbers',
+        on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=20)
+
+
+class SocialMediaLink(models.Model):
+    contact = models.ForeignKey(
+        Contact, related_name='social_media_links',
+        on_delete=models.CASCADE)
+    platform_name = models.CharField(max_length=100)
+    link = models.URLField()
+    tag = models.CharField(max_length=100)

@@ -35,3 +35,7 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.register(models.User, UserAdmin)
 admin.site.register(models.Recipe)
+admin.site.register(models.Contact)
+admin.site.register(models.Email)
+admin.site.register(models.PhoneNumber)
+admin.site.register(models.SocialMediaLink)
