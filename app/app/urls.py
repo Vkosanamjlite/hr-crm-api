@@ -28,6 +28,6 @@ urlpatterns = [
          name='api-docs',
          ),
     path('api/user/', include('user.urls')),
-    path('api/recipe/', include('recipe.urls', namespace='recipe')),
-    # path('api/contacts/', include('contacts.urls', namespace='contacts')),
+    path('api/recipe/', include('recipe.urls', 'recipe')),
+    path('api/contact/', include('contact.urls', 'contact')),
 ]
