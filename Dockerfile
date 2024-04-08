@@ -24,13 +24,16 @@ RUN apk add --update --no-cache postgresql-client && \
 # Install any needed packages specified in requirements.txt
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip setuptools && \
-    /py/bin/pip install -r /tmp/requirements.txt && \
-    echo "DEV=$DEV" && \
-    if [ "$DEV" = 'true' ]; then /py/bin/pip install -r /tmp/requirements.dev.txt; fi && \
-    apk del .tmp-build-deps
+    /py/bin/pip install -r /tmp/requirements.txt
 
-# Clean up
-RUN rm -rf /tmp
+# Check if DEV is true, then install the packages
+RUN if [ "$DEV" = "true" ]; then \
+    /py/bin/pip install -r /tmp/requirements.dev.txt; \
+fi
+
+# Clean Up
+RUN apk del .tmp-build-deps && \
+    rm -rf /tmp
 
 # Make port 8000 available to the world outside this container
 EXPOSE 8000
@@ -45,10 +48,4 @@ RUN adduser --disabled-password --no-create-home django-user
 USER django-user
 
 # Command to run the application
-CMD ["python", "app.py"]
-
-RUN echo "DEV=$DEV"
-RUN if [ "$DEV" = "true" ]; then echo "this is true"; fi
-RUN if [ "$DEV" = 'true' ]; then echo "this is not true"; fi
-RUN if [ $DEV = "true" ]; then echo "this is not 0true"; fi
-RUN if [ $DEV = 'true' ]; then echo "this is not 2true"; fi
+CMD ["python", "-Xfrozen_modules=off", "-m", "debugpy", "--listen", "0.0.0.0:5678", "app.py"]
