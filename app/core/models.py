@@ -73,12 +73,18 @@ class Contact(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return f'{self.first_name}, {self.last_name}'
+
 
 class Email(models.Model):
     contact = models.ForeignKey(
         Contact, related_name='emails',
         on_delete=models.CASCADE)
     email = models.EmailField()
+
+    def __str__(self):
+        return f'{self.email}({self.contact.first_name}, {self.contact.last_name})'
 
 
 class PhoneNumber(models.Model):
@@ -87,6 +93,8 @@ class PhoneNumber(models.Model):
         on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=20)
 
+    def __str__(self):
+        return f'{self.phone_number}({self.contact.first_name}, {self.contact.last_name})'
 
 class SocialMediaLink(models.Model):
     contact = models.ForeignKey(
@@ -95,3 +103,5 @@ class SocialMediaLink(models.Model):
     platform_name = models.CharField(max_length=100)
     link = models.URLField()
     tag = models.CharField(max_length=100)
+    def __str__(self):
+        return f'{self.link}({self.contact.first_name}, {self.contact.last_name})'
